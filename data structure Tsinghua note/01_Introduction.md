@@ -23,6 +23,10 @@ To iterate is human,to recure, divine(迭代乃人工，递归方神通)
 
 ### 动态规划DP
 
+根据google搜索的第一个回答
+
+Dynamic Programming is a method for solving a complex problem by breaking it down into a collection of simpler subproblems, `**solving each of those subproblems just once**, and storing their solutions using a memory-based data structure (array, map,etc).
+
 #### p24-28利用Fibonacci()
 
 讲解了三种算法的**封底估算**。以及为什么单纯递归解法十分耗时的原因。
