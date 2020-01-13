@@ -15,7 +15,7 @@ ECMAScript 和 JavaScript 的关系是，前者是后者的规格，后者是前
 
 ## Ⅱ. let 和 const 命令
 
-### 1.let
+### 1. let
 
 `let`实际上为 JavaScript 新增了块级作用域。
 
@@ -48,7 +48,7 @@ if (true) {
 
 
 
-### 2.块级作用域
+### 2. 块级作用域
 
 ES5 只有全局作用域和函数作用域，没有块级作用域，这带来很多不合理的场景。
 
@@ -82,7 +82,7 @@ console.log(i) //1
 
 
 
-### 3.const 命令
+### 3. const 命令
 
 `const`声明一个只读的常量。一旦声明，常量的值就不能改变。`const`一旦声明变量，就必须立即初始化，不能留到以后赋值。
 
@@ -104,9 +104,9 @@ ES6 允许按照一定模式，从数组和对象中提取值，对变量进行�
 
 
 
-## Ⅳ字符串的扩展
+## Ⅳ.字符串的扩展
 
-### 1.字符串的扩展
+### 1. 字符串的扩展
 
 ES6 加强了对 Unicode 的支持，允许采用`\uxxxx`形式表示一个字符，其中`xxxx`表示字符的 Unicode 码点。
 
@@ -116,7 +116,7 @@ es6规定，只要将码点放入大括号，就能正确解读该字符。
 
 
 
-### 2.字符串的遍历器接口
+### 2. 字符串的遍历器接口
 
 `for...of`可遍历循环字符串，例如
 
@@ -133,7 +133,7 @@ for (let codePoint of 'foo') {
 
 
 
-### 3.模板字符串
+### 3. 模板字符串
 
 模板字符串（template string）是增强版的字符串，用反引号（`）标识。它可以当作普通字符串使用，也可以用来定义多行字符串，或者在字符串中嵌入变量。
 
@@ -143,4 +143,124 @@ for (let codePoint of 'foo') {
 
 
 
-### 4.标签模板
+### 4. 标签模板
+
+模板字符串的功能，不仅仅是上面这些。它可以紧跟在一个函数名后面，该函数将被调用来处理这个模板字符串。这被称为“标签模板”功能（tagged template）。
+
+```javascript
+alert`123`
+// 等同于
+alert(123)
+```
+
+标签模板其实不是模板，而是函数调用的一种特殊形式。“标签”指的就是函数，紧跟在后面的模板字符串就是它的参数。
+
+但是，如果模板字符里面有变量，就不是简单的调用了，而是会将模板字符串先处理成多个参数，再调用函数。
+
+```javascript
+let a = 5;
+let b = 10;
+
+tag`Hello ${ a + b } world ${ a * b }`;
+// 等同于
+tag(['Hello ', ' world ', ''], 15, 50);
+```
+
+
+
+## Ⅴ. 字符串的新增方法
+
+详情见阮大的 http://es6.ruanyifeng.com/#docs/string-methods
+
+### 1. String.fromCodePoint()
+
+ES5 提供`String.fromCharCode()`方法，用于从 Unicode 码点返回对应字符，但是这个方法不能识别码点大于`0xFFFF`的字符。
+
+
+
+### 2. String.raw()
+
+ES6 还为原生的 String 对象，提供了一个`raw()`方法。该方法返回一个斜杠都被转义（即斜杠前面再加一个斜杠）的字符串，往往用于模板字符串的处理方法。
+
+
+
+### 3. 实例方法：codePointAt()
+
+ES6 提供了`codePointAt()`方法，能够正确处理 4 个字节储存的字符，返回一个字符的码点。
+
+
+
+### 4. 实例方法：normalize() 
+
+ES6 提供字符串实例的`normalize()`方法，用来将字符的不同表示方法统一为同样的形式，这称为 Unicode 正规化。(解决欧洲重音符号的字符及合成符，比如重音`Ǒ`合成`Ǒ` JavaScript 不能识别的问题)
+
+
+
+### 5. 实例方法：includes(), startsWith(), endsWith()
+
+传统上，JavaScript 只有`indexOf`方法，可以用来确定一个字符串是否包含在另一个字符串中。ES6 又提供了三种新方法。
+
+- **includes()**：返回布尔值，表示是否找到了参数字符串。
+- **startsWith()**：返回布尔值，表示参数字符串是否在原字符串的头部。
+- **endsWith()**：返回布尔值，表示参数字符串是否在原字符串的尾部。
+
+
+
+### 6. 实例方法：repeat()
+
+`repeat`方法返回一个新字符串，表示将原字符串重复`n`次。
+
+
+
+### 7. 实例方法：padStart()，padEnd()
+
+ES2017 引入了字符串补全长度的功能。如果某个字符串不够指定长度，会在头部或尾部补全。`padStart()`用于头部补全，`padEnd()`用于尾部补全。
+
+
+
+### 8. 实例方法：trimStart()，trimEnd()
+
+[ES2019](https://github.com/tc39/proposal-string-left-right-trim) 对字符串实例新增了`trimStart()`和`trimEnd()`这两个方法。它们的行为与`trim()`一致，`trimStart()`消除字符串头部的空格，`trimEnd()`消除尾部的空格。它们返回的都是新字符串，不会修改原始字符串。
+
+
+
+### 9. 实例方法：matchAll()
+
+`matchAll()`方法返回一个正则表达式在当前字符串的所有匹配。
+
+
+
+## Ⅵ. 正则的扩展
+
+### 1. RegExp 构造函数
+
+在 ES5 中，`RegExp`构造函数的参数有两种情况。
+
+第一种情况是，参数是字符串，这时第二个参数表示正则表达式的修饰符（flag）。
+
+```javascript
+var regex = new RegExp('xyz', 'i');
+// 等价于
+var regex = /xyz/i;
+```
+
+第二种情况是，参数是一个正则表示式，这时会返回一个原有正则表达式的拷贝。
+
+```javascript
+var regex = new RegExp(/xyz/i);
+// 等价于
+var regex = /xyz/i;
+```
+
+
+
+### 2.字符串的正则方法
+
+字符串对象共有 4 个方法，可以使用正则表达式：`match()`、`replace()`、`search()`和`split()`。
+
+ES6 将这 4 个方法，在语言内部全部调用`RegExp`的实例方法，从而做到所有与正则相关的方法，全都定义在`RegExp`对象上。
+
+- `String.prototype.match` 调用 `RegExp.prototype[Symbol.match]`
+- `String.prototype.replace` 调用 `RegExp.prototype[Symbol.replace]`
+- `String.prototype.search` 调用 `RegExp.prototype[Symbol.search]`
+- `String.prototype.split` 调用 `RegExp.prototype[Symbol.split]`
