@@ -264,3 +264,74 @@ ES6 将这 4 个方法，在语言内部全部调用`RegExp`的实例方法，�
 - `String.prototype.replace` 调用 `RegExp.prototype[Symbol.replace]`
 - `String.prototype.search` 调用 `RegExp.prototype[Symbol.search]`
 - `String.prototype.split` 调用 `RegExp.prototype[Symbol.split]`
+
+
+
+### 3. u 修饰符
+
+ES6 对正则表达式添加了`u`修饰符，含义为“Unicode 模式”，用来正确处理大于`\uFFFF`的 Unicode 字符。也就是说，会正确处理四个字节的 UTF-16 编码。
+
+一旦加上`u`修饰符号，就会修改下面这些正则表达式的行为。
+
+**（1）点字符 （2）Unicode 字符表示法 （3）量词（4）预定义模式**
+
+**（5）i 修饰符 （6）转义**
+
+具体细节：http://es6.ruanyifeng.com/#docs/regex
+
+
+
+### 4. RegExp.prototype.unicode 属性
+
+正则实例对象新增`unicode`属性，表示是否设置了`u`修饰符。
+
+
+
+### 5. y 修饰符
+
+除了`u`修饰符，ES6 还为正则表达式添加了`y`修饰符，叫做“粘连”（sticky）修饰符。
+
+`y`修饰符的作用与`g`修饰符类似，也是全局匹配，后一次匹配都从上一次匹配成功的下一个位置开始。不同之处在于，`g`修饰符只要剩余位置中存在匹配就可，而`y`修饰符确保匹配必须从剩余的第一个位置开始，这也就是“粘连”的涵义。
+
+
+
+### 6. RegExp.prototype.sticky 属性
+
+与`y`修饰符相匹配，ES6 的正则实例对象多了`sticky`属性，表示是否设置了`y`修饰符。
+
+
+
+### 7. RegExp.prototype.flags 属性
+
+ES6 为正则表达式新增了`flags`属性，会返回正则表达式的修饰符。
+
+
+
+### 8. s 修饰符：dotAll 模式
+
+正则表达式中，点（`.`）是一个特殊字符，代表任意的单个字符，但是有两个例外。一个是四个字节的 UTF-16 字符，这个可以用`u`修饰符解决；另一个是行终止符（line terminator character）。
+
+
+
+## Ⅶ. 数值的扩展
+
+### 1. 二进制和八进制表示法
+
+ES6 提供了二进制和八进制数值的新的写法，分别用前缀`0b`（或`0B`）和`0o`（或`0O`）表示。
+
+```javascript
+0b111110111 === 503 // true
+0o767 === 503 // true
+```
+
+
+
+### 2. Number.isFinite(), Number.isNaN()
+
+`Number.isFinite()`用来检查一个数值是否为有限的（finite），即不是`Infinity`。注意，如果参数类型不是数值，`Number.isFinite`一律返回`false`。
+
+`Number.isNaN()`用来检查一个值是否为`NaN`。如果参数类型不是`NaN`，`Number.isNaN`一律返回`false`。
+
+### 3. Number.parseInt(), Number.parseFloat()
+
+ES6 将全局方法`parseInt()`和`parseFloat()`，移植到`Number`对象上面，行为完全保持不变。
